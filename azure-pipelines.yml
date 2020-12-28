@@ -28,3 +28,25 @@ stages:
         Dockerfile: '**/Dockerfile'
         tags: 
           $(tag)
+
+- stage: Terraforming on Azure
+  displayName: Terraforming on Azure
+  jobs:  
+  - job: Install_Terraform
+    displayName: Terraforming on Azure
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps: 
+    - task: TerraformCLI@0
+      inputs:
+        command: 'init'
+        allowTelemetryCollection: true
+    - task: TerraformCLI@0
+      inputs:
+        command: 'validate'
+        allowTelemetryCollection: true
+    
+    - task: TerraformCLI@0
+      inputs:
+        command: 'plan'
+        allowTelemetryCollection: true
