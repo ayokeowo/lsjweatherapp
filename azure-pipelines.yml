@@ -29,7 +29,7 @@ stages:
         tags: 
           $(tag)
 
-- stage: Terraforming on Azure
+- stage: TerraformingonAzure
   displayName: Terraforming on Azure
   jobs:  
   - job: Install_Terraform
