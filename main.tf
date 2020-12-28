@@ -21,7 +21,7 @@ resource "azurerm_container_group" "tforming" {
 
   container {
     name   = "weatherapi"
-    image  = "octo99/weatherapi"
+    image  = "octo99/weatherapi:${var.buildversion}"
     cpu    = "0.5"
     memory = "1"
 
