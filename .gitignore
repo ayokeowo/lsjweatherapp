@@ -70,6 +70,8 @@ msbuild.wrn
 *.so
 
 # Terraform
+terraform.tfstate
+terraform.tfstate.*
 .terraform
 © 2020 GitHub, Inc.
 Terms
