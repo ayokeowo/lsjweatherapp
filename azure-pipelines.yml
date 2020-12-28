@@ -3,7 +3,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- main
+- master
 
 resources:
 - repo: self
@@ -28,3 +28,35 @@ stages:
         Dockerfile: '**/Dockerfile'
         tags: 
           $(tag)
+
+- stage: Provision
+  displayName: Terraforming on Azure
+  dependsOn: Build
+  jobs:  
+  - job: Provision
+    displayName: Provisioning Container Instance
+    pool:
+      vmImage: 'ubuntu-latest'
+    variables:
+    - group: TerraformSPvars
+    steps:
+    - script: 
+      env:
+        ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+        ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+        ARM_TENANT_ID: $(ARM_TENANT_ID)
+        ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+        TF_VAR_imagebuild: $(tag)
+    - task: TerraformCLI@0
+      inputs:
+        command: 'init'
+        allowTelemetryCollection: true
+    - task: TerraformCLI@0
+      inputs:
+        command: 'validate'
+        allowTelemetryCollection: true
+    
+    - task: TerraformCLI@0
+      inputs:
+        command: 'plan'
+        allowTelemetryCollection: true
